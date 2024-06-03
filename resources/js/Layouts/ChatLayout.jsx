@@ -47,8 +47,8 @@ const ChatLayout = ({children}) => {
         })
     }
 
-    const messageDeleted = ({ prevMessage}) => {
-        if(!prevMessage){
+    const messageDeleted = ({prevMessage}) => {
+        if (!prevMessage) {
             return;
         }
         messageCreated(prevMessage)
@@ -57,16 +57,18 @@ const ChatLayout = ({children}) => {
     useEffect(() => {
         const offCreated = on("message.created", messageCreated)
         const offDeleted = on("message.deleted", messageDeleted)
-        const offModalShow = on("GroupModal.show", (group) =>{setShowGroupModal(true)})
+        const offModalShow = on("GroupModal.show", (group) => {
+            setShowGroupModal(true)
+        })
 
-        const offGroupDelete = on("group.deleted", ({id, name})=>{
+        const offGroupDelete = on("group.deleted", ({id, name}) => {
             setLocalConversations((oldConversations) => {
                 return oldConversations.filter((con) => con.id != id)
             })
 
             emit("toast.show", `Group "${name}" was deleted`)
 
-            if(!selectedConversation || (selectedConversation.is_group && selectedConversation.id == id)){
+            if (!selectedConversation || (selectedConversation.is_group && selectedConversation.id == id)) {
                 router.visit(route("dashboard"))
             }
         })
@@ -144,7 +146,7 @@ const ChatLayout = ({children}) => {
     return <>
         <div className="flex-1 w-full flex overflow-hidden">
             <div
-                className={`transition-all w-full sm:w-[220px] md:w-[300px] bg-slate-800 flex flex-col overflow-hidden ${selectedConversation ? "-ml-[100%] sm:ml-0" : ""}`}>
+                className={`transition-all w-full sm:w-[220px] md:w-[300px] bg-cyan-700 flex flex-col overflow-hidden ${selectedConversation ? "-ml-[100%] sm:ml-0" : ""}`}>
                 <div className="flex items-center justify-between py-2 px-3 text-xl font-medium text-gray-200">
                     My Conversations
                     <div className="tooltip tooltip-left" data-tip="Create new Group">

@@ -134,10 +134,10 @@ function Home({selectedConversation = null, messages = null}) {
         <>
             {!messages && (
                 <div className='flex flex-col gap-8 justify-center items-center text-center h-full opacity-35'>
-                    <div className="text-2xl md:text-4xl p-16 text-cyan-200">
+                    <div className="text-2xl md:text-4xl p-16 text-cyan-400">
                         Please select conversation to see messages
                     </div>
-                    <ChatBubbleLeftRightIcon className="w-32 h-32 inline-block text-cyan-200"/>
+                    <ChatBubbleLeftRightIcon className="w-32 h-32 inline-block text-cyan-400"/>
                 </div>
             )}
 
