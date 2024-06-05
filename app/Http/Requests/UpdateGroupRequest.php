@@ -22,9 +22,10 @@ class UpdateGroupRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'image' => ['nullable', 'image', 'max:1024'],
             'description' => ['nullable', 'string'],
             'user_ids' => ['nullable', 'array'],
-            'user_ids.*' => ['integer', 'exists:users,id']
+            'user_ids.*' => ['integer', 'exists:users,id'],
         ];
     }
 }

@@ -20,10 +20,11 @@ export default function GroupModal({
     const conversations = page.props.conversations
     const {on, emit} = useEventBus()
     const [group, setGroup] = useState({})
-    const {data, setData, processing, reset, post, put, errors} = useForm({
+    const {data, setData, processing, reset, post, errors} = useForm({
         id: "",
         name: "",
         description: "",
+        image: null,
         user_ids: [],
     })
 
@@ -33,7 +34,8 @@ export default function GroupModal({
         e.preventDefault()
 
         if (group.id) {
-            put(route("group.update", group.id), {
+            debugger
+            post(route("group.update", group.id), {
                 onSuccess: () => {
                     closeModal()
                     emit("toast.show", `Group "${data.name}" was updated.`)
@@ -60,6 +62,8 @@ export default function GroupModal({
             setData({
                 name: group.name,
                 description: group.description,
+                image: null,
+                _method: "PATCH",
                 user_ids: group.users.filter((u) => group.owner_id !== u.id).map((u) => u.id)
             })
             setGroup(group)
@@ -72,7 +76,6 @@ export default function GroupModal({
                 onSubmit={createOrUpdateGroup}
                 className="p-6 overflow-y-auto"
             >
-
                 <h2 className="text-xl font-medium text-gray-900 ">
                     {group.id ? `Edit group ${group.name}` : "Create new Group"}
                 </h2>
@@ -103,7 +106,7 @@ export default function GroupModal({
                     <UserPicker value={
                         users.filter(
                             (u) =>
-                            group.owner_id !== u.id &&
+                                group.owner_id !== u.id &&
                                 data.user_ids.includes(u.id)
                         ) || []
                     }
@@ -111,6 +114,20 @@ export default function GroupModal({
                                 onSelect={(users) => setData("user_ids", users.map((u) => u.id))}/>
 
                     <InputError className="mt-2" message={errors.user_ids}/>
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="image" value="Group Picture"/>
+
+                    <input
+                        id="image"
+                        type="file"
+                        className="file-input file-input-bordered file-input-info w-full max-w-xs"
+                        onChange={(e) => setData("image", e.target.files[0])}
+                    />
+                    <p className="mt-1 text-gray-400">Please upload square Picture. Ex: 512px&times;512px</p>
+
+                    <InputError className="mt-2" message={errors.image}/>
                 </div>
                 <div className="mt-6 flex justify-end">
                     <SecondaryButton onClick={closeModal}>

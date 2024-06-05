@@ -11,16 +11,16 @@ const ConversationHeader = ({selectedConversation}) => {
     const authUser = usePage().props.auth.user;
     const {emit} = useEventBus()
     const onDeleteGroup = () => {
-        if(!window.confirm('Are You sure you want to delete this group?')){
+        if (!window.confirm('Are You sure you want to delete this group?')) {
             return;
         }
 
         axios.delete(route('group.destroy', selectedConversation.id))
-            .then((res)=>{
+            .then((res) => {
                 emit("toast.show", res.data.message)
                 console.log(res)
             })
-            .catch((err) =>{
+            .catch((err) => {
                 console.error(err)
             })
     }
@@ -36,7 +36,7 @@ const ConversationHeader = ({selectedConversation}) => {
                         {selectedConversation.is_user && (
                             <UserAvatar user={selectedConversation}/>
                         )}
-                        {selectedConversation.is_group && <GroupAvatar/>}
+                        {selectedConversation.is_group && <GroupAvatar group={selectedConversation}/>}
                         <div>
                             <h3>{selectedConversation.name}</h3>
                             {selectedConversation.is_group && (

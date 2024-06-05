@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Group extends Model
 {
@@ -17,33 +18,34 @@ class Group extends Model
         'description',
         'owner_id',
         'last_message_id',
+        'image'
     ];
 
-    public function users() : BelongsToMany
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'group_users');
     }
 
-    public function messages() : HasMany
+    public function messages(): HasMany
     {
         return $this->hasMany(Message::class);
     }
 
-    public function owner() : BelongsTo
+    public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'owner_id');
     }
 
-    public function lastMessage() : BelongsTo
+    public function lastMessage(): BelongsTo
     {
         return $this->belongsTo(Message::class, 'last_message_id');
     }
 
     public static function getGroupsForUser(User $user)
     {
-        $query = self::select(['groups.*','messages.message as last_message', 'messages.created_at as last_message_date'])
-            ->join('group_users','group_users.group_id','=','groups.id')
-            ->leftJoin('messages','messages.id','=','groups.last_message_id')
+        $query = self::select(['groups.*', 'messages.message as last_message', 'messages.created_at as last_message_date'])
+            ->join('group_users', 'group_users.group_id', '=', 'groups.id')
+            ->leftJoin('messages', 'messages.id', '=', 'groups.last_message_id')
             ->where('group_users.user_id', $user->id)
             ->orderBy('messages.created_at', 'desc')
             ->orderBy('groups.name');
@@ -62,10 +64,11 @@ class Group extends Model
             'owner_id' => $this->owner_id,
             'users' => $this->users,
             'user_ids' => $this->users->pluck('id'),
+            'image_url' => $this->image ? Storage::url($this->image) : null,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'last_message' => $this->last_message,
-            'last_message_date' =>  $this->last_message_date ? ($this->last_message_date . ' UTC') : null,
+            'last_message_date' => $this->last_message_date ? ($this->last_message_date . ' UTC') : null,
         ];
     }
 
@@ -73,7 +76,7 @@ class Group extends Model
     {
         return self::updateOrCreate(
             ['id' => $groupId],
-            [ 'last_message_id' => $message->id]
+            ['last_message_id' => $message->id]
         );
     }
 }

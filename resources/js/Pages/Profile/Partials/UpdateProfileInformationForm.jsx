@@ -2,14 +2,14 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Link, useForm, usePage } from '@inertiajs/react';
-import { Transition } from '@headlessui/react';
+import {Link, useForm, usePage} from '@inertiajs/react';
+import {Transition} from '@headlessui/react';
 import UserAvatar from "@/Components/App/UserAvatar.jsx";
 
-export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '' }) {
+export default function UpdateProfileInformation({mustVerifyEmail, status, className = ''}) {
     const user = usePage().props.auth.user;
 
-    const { data, setData, post, errors, processing, recentlySuccessful } = useForm({
+    const {data, setData, post, errors, processing, recentlySuccessful} = useForm({
         name: user.name,
         avatar: null,
         email: user.email,
@@ -40,7 +40,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     <input
                         id="avatar"
                         type="file"
-                        className="file-input file-input-bordered file-input-primary w-full max-w-xs"
+                        className="file-input file-input-bordered file-input-info w-full max-w-xs"
                         onChange={(e) => setData("avatar", e.target.files[0])}
                     />
                     <p className="mt-1 text-gray-400">Please upload square Picture. Ex: 512px&times;512px</p>
