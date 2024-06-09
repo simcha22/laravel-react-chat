@@ -7,24 +7,25 @@ import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {useForm} from "@inertiajs/react";
 import {useEventBus} from "@/EventBus.jsx";
 import Checkbox from "@/Components/Checkbox.jsx";
+import TextAreaInput from "@/Components/TextAreaInput.jsx";
 
-export default function NewUserModal({
+export default function NewPostModal({
                                          show = false, onClose = () => {
     }
                                      }) {
 
     const {emit} = useEventBus()
     const {data, setData, processing, reset, post, errors} = useForm({
-        name: "",
-        email: "",
-        is_admin: false,
+        title: "",
+        body: "",
+        image: null,
     })
 
     const submit = (e) => {
         e.preventDefault()
-        post(route("user.store"), {
+        post(route("post.store"), {
             onSuccess: () => {
-                emit("toast.show", `User "${data.name}" was created.`)
+                emit("toast.show", `Post "${data.title}" was created.`)
                 closeModal()
             }
         })
@@ -41,43 +42,42 @@ export default function NewUserModal({
                 onSubmit={submit}
                 className="p-6 overflow-y-auto"
             >
-
                 <h2 className="text-xl font-medium text-gray-900 ">
-                    Create new User
+                    Create new Post
                 </h2>
 
                 <div className="mt-8">
-                    <InputLabel htmlFor="name" value="Name"/>
+                    <InputLabel htmlFor="title" value="title"/>
 
-                    <TextInput id="name" className="mt-1 block w-full" value={data.name}
-                               onChange={(e) => setData("name", e.target.value)}
+                    <TextInput id="title" className="mt-1 block w-full" value={data.title}
+                               onChange={(e) => setData("title", e.target.value)}
                                required isFocused/>
 
-                    <InputError className="mt-2" message={errors.name}/>
+                    <InputError className="mt-2" message={errors.title}/>
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email"/>
+                    <InputLabel htmlFor="body" value="body"/>
 
-                    <TextInput id="email" className="mt-1 block w-full" value={data.email}
-                               onChange={(e) => setData("email", e.target.value)}
-                               required/>
+                    <TextAreaInput id="body" rows="3" className="mt-1 block w-full"
+                                   value={data.body || ""}
+                                   onChange={(e) => setData("body", e.target.value)}/>
 
-
-                    <InputError className="mt-2" message={errors.email}/>
+                    <InputError className="mt-2" message={errors.body}/>
                 </div>
 
-                <div className="block mt-4">
-                    <label className="flex items-center">
-                        <Checkbox
-                            name="is_admin"
-                            checked={data.is_admin}
-                            onChange={(e) => setData('is_admin', e.target.checked)}
-                        />
-                        <span className="ms-2 text-sm text-gray-600">Admin User</span>
-                    </label>
+                <div>
+                    <InputLabel htmlFor="image" value="Group Picture"/>
 
-                    <InputError className="mt-2" message={errors.is_admin}/>
+                    <input
+                        id="image"
+                        type="file"
+                        className="file-input file-input-bordered file-input-info w-full max-w-xs"
+                        onChange={(e) => setData("image", e.target.files[0])}
+                    />
+                    <p className="mt-1 text-gray-400">Please upload square Picture. Ex: 512px&times;512px</p>
+
+                    <InputError className="mt-2" message={errors.image}/>
                 </div>
 
                 <div className="mt-6 flex justify-end">

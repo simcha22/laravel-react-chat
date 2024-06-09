@@ -10,4 +10,9 @@ class HomeController extends Controller
     {
         return inertia('Home');
     }
+
+    public function posts()
+    {
+        return inertia('Posts');
+    }
 }

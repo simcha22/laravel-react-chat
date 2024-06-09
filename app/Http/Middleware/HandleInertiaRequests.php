@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Resources\PostResource;
 use App\Http\Resources\UserResource;
 use App\Models\Conversation;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
@@ -38,6 +40,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => Auth::id() ? new UserResource($request->user()) : null,
             ],
             'conversations' => Auth::id() ? Conversation::getConversationsForSidebar(Auth::user()) : [],
+            'posts' => Auth::id() ? PostResource::collection(Post::getPostForMainPage()) : [],
         ];
     }
 }

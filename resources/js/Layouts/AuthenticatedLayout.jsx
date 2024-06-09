@@ -8,9 +8,10 @@ import {useEventBus} from "@/EventBus.jsx";
 import Toast from "@/Components/App/Toast.jsx";
 import NewMessageNotification from "@/Components/App/NewMessageNotification.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
-import {UserPlusIcon} from "@heroicons/react/24/solid/index.js";
+import {PlusCircleIcon, UserPlusIcon} from "@heroicons/react/24/solid/index.js";
 import UserAvatar from "@/Components/App/UserAvatar.jsx";
 import NewUserModal from "@/Components/App/NewUserModal.jsx";
+import NewPostModal from "@/Components/App/NewPostModal.jsx";
 
 export default function Authenticated({header, children}) {
 
@@ -19,6 +20,7 @@ export default function Authenticated({header, children}) {
     const conversations = page.props.conversations;
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const [showNewUserModal, setShowNewUserModal] = useState(false)
+    const [showNewPostModal, setShowNewPostModal] = useState(false)
     const {emit} = useEventBus()
 
     useEffect(() => {
@@ -101,19 +103,29 @@ export default function Authenticated({header, children}) {
                                     <NavLink href={route('dashboard')} active={route().current('dashboard')}>
                                         Dashboard
                                     </NavLink>
+
+                                    <NavLink href={route('posts')} active={route().current('posts')}>
+                                        Blog
+                                    </NavLink>
                                 </div>
                             </div>
 
                             <div className="hidden sm:flex sm:items-center sm:ms-6">
                                 <div className="flex ms-3 relative">
 
-                                    {user.is_admin && (
-                                        <PrimaryButton onClick={ev => setShowNewUserModal(true)}>
-                                            <UserPlusIcon className="h-5 w-5 mr-2"/>
-                                            Add New User
+                                    {user.is_admin && route().current('dashboard')
+                                        && (
+                                            <PrimaryButton className="mr-4" onClick={ev => setShowNewUserModal(true)}>
+                                                <UserPlusIcon className="h-5 w-5 mr-2"/>
+                                                Add New User
+                                            </PrimaryButton>
+                                        )}
+                                    {route().current('posts') &&
+                                        <PrimaryButton className="mr-4" onClick={ev => setShowNewPostModal(true)}>
+                                            <PlusCircleIcon className="h-5 w-5 mr-2"/>
+                                            New Post
                                         </PrimaryButton>
-                                    )}
-
+                                    }
                                     <Dropdown>
                                         <Dropdown.Trigger>
                                         <span className="inline-flex rounded-md">
@@ -209,7 +221,8 @@ export default function Authenticated({header, children}) {
             </div>
             <Toast/>
             <NewMessageNotification/>
-            <NewUserModal snow={showNewUserModal} onClose={(ev) => setShowNewUserModal(false)}/>
+            <NewUserModal show={showNewUserModal} onClose={(ev) => setShowNewUserModal(false)}/>
+            <NewPostModal show={showNewPostModal} onClose={(ev) => setShowNewPostModal(false)}/>
         </>
     );
 }

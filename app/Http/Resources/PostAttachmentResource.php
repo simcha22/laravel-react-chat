@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
 
-class MessageAttachmentResource extends JsonResource
+class PostAttachmentResource extends JsonResource
 {
     public static $wrap = false;
 
@@ -14,7 +14,7 @@ class MessageAttachmentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'message_id' => $this->message_id,
+            'post_id' => $this->post_id,
             'name' => $this->name,
             'mime' => $this->mime,
             'size' => $this->size,
