@@ -56,23 +56,3 @@ class UserController extends Controller
         return response()->json(['message' => $message]);
     }
 }
-
-
-//$keys = $request->input('model_type') ?  [
-//] :  [
-//    'incoming',
-//    'read',
-//    'type',
-//];
-//$filterKeeper = new FilterKeeper(
-//    $request->user(),
-//    'communications',
-//    array_merge([
-//        'search',
-//        'archived',
-//        'date_range',
-//        'user_id',
-//        'has_model',
-//        'order_by_opened_at',
-//    ] , $keys)
-//);

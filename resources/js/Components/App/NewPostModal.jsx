@@ -66,8 +66,8 @@ export default function NewPostModal({
                     <InputError className="mt-2" message={errors.body}/>
                 </div>
 
-                <div>
-                    <InputLabel htmlFor="image" value="Group Picture"/>
+                <div className="mt-4">
+                    <InputLabel htmlFor="image" value="Post Picture"/>
 
                     <input
                         id="image"

@@ -3,7 +3,7 @@ import {usePage} from "@inertiajs/react";
 import {useEffect, useState} from "react";
 import PostItem from "@/Components/App/PostItem.jsx";
 
-function Posts({}) {
+function Index({}) {
 
     const page = usePage();
     const posts = page.props.posts;
@@ -36,7 +36,7 @@ function Posts({}) {
 }
 
 
-Posts.layout = (page) => {
+Index.layout = (page) => {
     return (
         <AuthenticatedLayout
             user={page.props.auth.user}
@@ -46,4 +46,4 @@ Posts.layout = (page) => {
         </AuthenticatedLayout>
     )
 }
-export default Posts
+export default Index

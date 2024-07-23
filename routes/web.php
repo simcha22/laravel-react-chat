@@ -10,7 +10,6 @@ use App\Http\Controllers\PostController;
 
 Route::middleware(['auth', 'verified', 'active'])->group(function () {
     Route::get('/', [HomeController::class, 'home'])->name('dashboard');
-    Route::get('/posts', [HomeController::class, 'posts'])->name('posts');
 
     Route::get('/user/{user}', [MessageController::class, 'byUser'])->name('chat.user');
     Route::get('/group/{group}', [MessageController::class, 'byGroup'])->name('chat.group');
@@ -30,7 +29,9 @@ Route::middleware(['auth', 'verified', 'active'])->group(function () {
         Route::post('/user/block-unblock/{user}', [UserController::class, 'blockUnblock'])->name('user.blockUnblock');
     });
 
+    Route::get('/posts', [PostController::class, 'index'])->name('posts');
     Route::post('/post', [PostController::class, 'store'])->name('post.store');
+    Route::get('/post/{post}', [PostController::class, 'show'])->name('post.show');
 });
 
 Route::middleware('auth')->group(function () {

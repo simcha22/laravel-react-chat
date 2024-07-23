@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
+use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Models\PostAttachment;
 use Illuminate\Http\Request;
@@ -12,6 +13,20 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
+
+    public function index()
+    {
+        return inertia('Posts/Index');
+    }
+
+    public function show(Post $post)
+    {
+        $post = Post::where('id', $post->id)->first();
+        return inertia('Posts/Post', [
+            'post' => new PostResource($post)
+        ]);
+    }
+
     public function store(StorePostRequest $request)
     {
         $data = $request->validated();

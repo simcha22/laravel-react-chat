@@ -1,5 +1,3 @@
-import {nativeTouchData} from "react-dom/test-utils";
-
 export const formatMessageDateLong = (date) => {
     const now = new Date()
     const inputDate = new Date(date)
